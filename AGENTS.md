@@ -10,18 +10,23 @@ Requires Go 1.26. Single package `anonymize` at the repo root.
 
 ## Common commands
 
+Prefer the `Makefile` for standard workflows — it matches what CI should run:
+
 ```sh
-go test ./...                 # run all tests
-go test -race -count=1 ./...  # full test run; matches the hook's recommended invocation
-go test -run TestParseUA ./...                # run one test function
-go test -run TestParseUA/chrome_on_windows    # run one table-driven subtest
-go vet ./...
-gofmt -l .                    # must produce no output
-go build ./...
-govulncheck ./...             # vulnerability scan (install: go install golang.org/x/vuln/cmd/govulncheck@latest)
+make            # fmt-check + vet + race-enabled tests (default)
+make test-race  # go test -race -count=1 ./...
+make vulncheck  # govulncheck ./...  (run `make tools` once to install it)
+make help       # list all targets
 ```
 
-The `validate-go-test.sh` PreToolUse hook reminds you to pass `-race` on test runs; `validate-go-toolchain.sh` blocks Go commands when the installed toolchain disagrees with the compiler.
+Drop down to raw `go` for anything Make doesn't cover, like running a single test:
+
+```sh
+go test -run TestParseUA ./...                # one test function
+go test -run TestParseUA/chrome_on_windows    # one table-driven subtest
+```
+
+The `validate-go-test.sh` PreToolUse hook reminds you to pass `-race` on ad-hoc `go test` invocations; `validate-go-toolchain.sh` blocks Go commands when the installed toolchain disagrees with the compiler.
 
 ## Architecture
 

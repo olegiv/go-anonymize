@@ -95,6 +95,22 @@ anonymize.ExtractDomain("https://www.example.com/path?q=1")
 All functions are safe to call concurrently. The User-Agent parser is
 initialized once on first use via `sync.Once`.
 
+## Development
+
+A `Makefile` wraps the common Go commands:
+
+```sh
+make            # fmt-check + vet + race-enabled tests (default)
+make test       # plain go test
+make test-race  # go test -race -count=1
+make vet
+make fmt        # gofmt -w .
+make build
+make vulncheck  # govulncheck ./...  (run `make tools` once to install it)
+make tidy       # go mod tidy
+make help       # list all targets
+```
+
 ## License
 
 MIT — see [LICENSE](LICENSE).
